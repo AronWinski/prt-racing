@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
 
     private Rigidbody rb;
-    public float force = 4.0f;
+    public float force = 7.0f;
 
     // Start is called before the first frame update
     void Start()
