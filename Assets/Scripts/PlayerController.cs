@@ -6,13 +6,12 @@ public class PlayerController : MonoBehaviour
 {
 
     private Rigidbody rb;
-    public float force = 5.0f;
+    public float force = 3.0f;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-
     }
 
     // Update is called once per frame
@@ -29,6 +28,8 @@ public class PlayerController : MonoBehaviour
 
 
     }
+
+    //TODO: clamps the speed of the car so it can't go too fast
 
     void processInput()
     {
