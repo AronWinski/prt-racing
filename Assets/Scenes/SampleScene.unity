@@ -868,7 +868,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &1276786464
 MonoBehaviour:
@@ -882,7 +882,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d187a420e1ec70c4082b52685453ec91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 1000
+  force: 100
+  turningForce: 7
 --- !u!65 &1276786465
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1168,7 +1169,7 @@ Transform:
   m_GameObject: {fileID: 1501818545}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -13.4971, y: -0, z: 3.1535}
-  m_LocalScale: {x: 26.484152, y: 1, z: 1.1160188}
+  m_LocalScale: {x: 47.11001, y: 1, z: 21.222214}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
