@@ -33,8 +33,6 @@ public class PlayerController : MonoBehaviour
 
     void processInput()
     {
-        float mh = Input.GetAxis("Horizontal");
-        float mv = Input.GetAxis("Vertical");
     }
 
 }
