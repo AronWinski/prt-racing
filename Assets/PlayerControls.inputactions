@@ -1,0 +1,90 @@
+{
+    "name": "PlayerControls",
+    "maps": [
+        {
+            "name": "Gameplay",
+            "id": "42738b89-96be-4e58-adc0-c099763d82e9",
+            "actions": [
+                {
+                    "name": "Turn",
+                    "type": "PassThrough",
+                    "id": "70b7c13a-3a04-436a-b208-8381240b29b2",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "accelerate",
+                    "type": "Value",
+                    "id": "86f6dac4-86b2-450b-9c83-38894d75632d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "deccelerate",
+                    "type": "Value",
+                    "id": "fc843faa-3236-49dc-a398-e96080e1d93e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "break",
+                    "type": "Button",
+                    "id": "3b94688d-783d-447f-94d7-a75e79b11ca9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6555370f-093e-4464-be45-a8037aa252fa",
+                    "path": "<Gamepad>/leftStick/x",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "df7fb838-b454-4dc2-aa37-17476b55f2aa",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "accelerate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "503b6c10-7648-483a-a4b8-4ed4d6aab6e4",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "deccelerate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6979b95f-a74e-46d7-8ff8-920695411523",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "break",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
