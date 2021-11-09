@@ -3,17 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 public class CarController : MonoBehaviour
 {
     private const string H = "Horizontal";
-    private const string V = "Vertical";
+
 
     //for controller input
     PlayerControls controls;
 
     public float horizontalInput;
-    private float verticalInput;
+    [SerializeField] private float verticalInput;
+    [SerializeField] private float verticalInputPos;
+    [SerializeField] private float verticalInputNeg;
+
     private float currentSteerAngle;
     private float currentBreakForce;
     private bool isBreaking;
@@ -21,12 +25,18 @@ public class CarController : MonoBehaviour
 
     private Rigidbody rb;
 
+    public float currentDownwardsForce;
+    private Vector3 currentVelocity;
+    public float currentVelocityX;
+    public float currentVelocityY;
+    public float currentVelocityZ;
+
     [SerializeField] private float motorForce;
     [SerializeField] private float breakForce;
     [SerializeField] private float downwardsForce;
     [SerializeField] private float maxSteerAngle;
 
-    public float currentDownwardsForce;
+
 
     [SerializeField] private WheelCollider frontLeftWheelCollider;
     [SerializeField] private WheelCollider frontRightWheelCollider;
@@ -43,38 +53,35 @@ public class CarController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         controls = new PlayerControls();
 
+        currentVelocity = transform.InverseTransformDirection(Vector3.forward);
+        currentVelocityZ = currentVelocity.z;
+
         //for accelerating
-        controls.Gameplay.accelerate.started += ctx => verticalInput = 1.0f;
-        controls.Gameplay.accelerate.canceled += ctx => verticalInput = 0.0f;
+        controls.Gameplay.accelerate.started += ctx => verticalInputPos = ctx.ReadValue<float>();
+        controls.Gameplay.accelerate.canceled += ctx => verticalInputPos = 0.0f;
         //for deccelerating
-        controls.Gameplay.deccelerate.started += ctx => verticalInput = -1.0f;
-        controls.Gameplay.deccelerate.canceled += ctx => verticalInput = 0.0f;
+        controls.Gameplay.deccelerate.started += ctx => verticalInputNeg = -(ctx.ReadValue<float>());
+        controls.Gameplay.deccelerate.canceled += ctx => verticalInputNeg = 0.0f;
         //for breaking
         controls.Gameplay.@break.started += ctx => isBreaking = true;
         controls.Gameplay.@break.canceled += ctx => isBreaking = false;
         //for steering
         controls.Gameplay.Turn.started += ctx => horizontalInput = ctx.ReadValue<float>();
         controls.Gameplay.Turn.canceled += ctx => horizontalInput = 0.0f;
-    }
 
+    }
     private void Start()
     {
+        //makes the ride smoother
         frontLeftWheelCollider.ConfigureVehicleSubsteps(5f, 12, 15);
         frontRightWheelCollider.ConfigureVehicleSubsteps(5f, 12, 15);
         backLeftWheelCollider.ConfigureVehicleSubsteps(5f, 12, 15);
         backRightWheelCollider.ConfigureVehicleSubsteps(5f, 12, 15);
 
+        //lowers the center of mass so it doesn't flip as much
         rb.centerOfMass = new Vector3(0.0f, 0.1f, 0.2f);
-    }
 
-    private void OnEnable()
-    {
-        controls.Gameplay.Enable();
-    }
 
-    private void OnDisable()
-    {
-        controls.Gameplay.Disable();
     }
 
     private void Update() {
@@ -85,23 +92,16 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        GetInput();
         HandleMotor();
         HandleSteering();
         UpdateWheels();
-
         DownForce();
     }
 
-    private void GetInput()
+    private void Update()
     {
-        /*if (Input.GetButton("Jump"))
-            verticalInput = 1.0f;
-        if (Input.GetButton("Fire3"))
-            verticalInput = -1.0f;
-
-        // Change once we decide on button to break with
-        */
+        //updates verticalInput based on acc and dec
+        verticalInput = verticalInputPos + verticalInputNeg;
     }
 
     private void HandleMotor()
@@ -109,6 +109,10 @@ public class CarController : MonoBehaviour
         frontLeftWheelCollider.motorTorque = verticalInput * motorForce;
         frontRightWheelCollider.motorTorque = verticalInput * motorForce;
         currentBreakForce = isBreaking ? breakForce : 0f;
+        /*if (verticalInput < Math.Abs(0.01f) && !isBreaking)
+        {
+            currentBreakForce = 400f;
+        }*/
         ApplyBreaking();
         
     }
@@ -148,8 +152,26 @@ public class CarController : MonoBehaviour
     private void DownForce()
     {
         //use the velocity to set a downword velocity value
-        currentDownwardsForce = Math.Abs(downwardsForce * rb.velocity.z);
+        currentDownwardsForce = Math.Abs(downwardsForce * currentVelocityZ);
 
-        rb.AddRelativeForce(new Vector3(0, -(currentDownwardsForce), 0));
+        rb.AddRelativeForce(new Vector3(0, -(currentDownwardsForce), -(currentDownwardsForce/30)));
     }
+
+    /// <summary>
+    /// Not important
+    /// </summary>
+    private void OnEnable()
+    {
+        controls.Gameplay.Enable();
+
+    }
+
+    private void OnDisable()
+    {
+        controls.Gameplay.Disable();
+    }
+
+ 
+
+
 }
