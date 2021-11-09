@@ -17,6 +17,7 @@ public class CarController : MonoBehaviour
     private float currentSteerAngle;
     private float currentBreakForce;
     private bool isBreaking;
+    public SpeedometerDisplay speedometer;
 
     private Rigidbody rb;
 
@@ -74,6 +75,12 @@ public class CarController : MonoBehaviour
     private void OnDisable()
     {
         controls.Gameplay.Disable();
+    }
+
+    private void Update() {
+
+        speedometer.updateSpeed(rb.velocity.magnitude);
+
     }
 
     private void FixedUpdate()
