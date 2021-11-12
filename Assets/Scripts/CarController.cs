@@ -9,6 +9,10 @@ public class CarController : MonoBehaviour
 {
     private const string H = "Horizontal";
 
+    //Camera interface
+    //public float cameraAngle;
+    //public GameObject camObject;
+    //private Camera cam;
 
     //for controller input
     PlayerControls controls;
@@ -35,8 +39,6 @@ public class CarController : MonoBehaviour
     [SerializeField] private float downwardsForce;
     [SerializeField] private float maxSteerAngle;
 
-
-
     [SerializeField] private WheelCollider frontLeftWheelCollider;
     [SerializeField] private WheelCollider frontRightWheelCollider;
     [SerializeField] private WheelCollider backLeftWheelCollider;
@@ -47,8 +49,13 @@ public class CarController : MonoBehaviour
     [SerializeField] private Transform backLeftWheelTransform;
     [SerializeField] private Transform backRightWheelTransform;
 
+   
+
     private void Awake()
     {
+        //for camera interface
+        //cam = camObject.GetComponent<Camera>();
+
         rb = GetComponent<Rigidbody>();
         controls = new PlayerControls();
 
@@ -67,8 +74,8 @@ public class CarController : MonoBehaviour
         //for steering
         controls.Gameplay.Turn.started += ctx => horizontalInput = ctx.ReadValue<float>();
         controls.Gameplay.Turn.canceled += ctx => horizontalInput = 0.0f;
-
     }
+
     private void Start()
     {
         //makes the ride smoother
@@ -78,9 +85,7 @@ public class CarController : MonoBehaviour
         backRightWheelCollider.ConfigureVehicleSubsteps(5f, 12, 15);
 
         //lowers the center of mass so it doesn't flip as much
-        rb.centerOfMass = new Vector3(0.0f, 0.1f, 0.2f);
-
-
+        rb.centerOfMass = new Vector3(0.0f, -0.4f, 0.2f);
     }
 
     private void FixedUpdate()
@@ -95,6 +100,8 @@ public class CarController : MonoBehaviour
     {
         //updates verticalInput based on acc and dec
         verticalInput = verticalInputPos + verticalInputNeg;
+
+        //HandleCamera();
     }
 
     private void HandleMotor()
@@ -102,10 +109,6 @@ public class CarController : MonoBehaviour
         frontLeftWheelCollider.motorTorque = verticalInput * motorForce;
         frontRightWheelCollider.motorTorque = verticalInput * motorForce;
         currentBreakForce = isBreaking ? breakForce : 0f;
-        /*if (verticalInput < Math.Abs(0.01f) && !isBreaking)
-        {
-            currentBreakForce = 400f;
-        }*/
         ApplyBreaking();
         
     }
@@ -149,6 +152,31 @@ public class CarController : MonoBehaviour
 
         rb.AddRelativeForce(new Vector3(0, -(currentDownwardsForce), -(currentDownwardsForce/30)));
     }
+
+    /// <summary>
+    /// ///////////////////Camera stuff
+    /// </summary>
+    /// StartCoroutine( ChangeSpeed( 100f, 40f, 2f ) );
+    /*
+    IEnumerator ChangeSpeed(float v_start, float v_end, float duration)
+    {
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            cameraAngle = Mathf.Lerp(v_start, v_end, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        cameraAngle = v_end;
+    }
+    
+
+    
+    private void HandleCamera()
+    {
+        //adjust the angle of the transform based on 
+    }
+    */
 
     /// <summary>
     /// Not important
