@@ -98,6 +98,10 @@ public class CarController : MonoBehaviour
 
     private void Update()
     {
+
+        GetComponent<SpeedometerDisplay>().updateSpeed(rb.velocity.magnitude);
+
+
         //updates verticalInput based on acc and dec
         verticalInput = verticalInputPos + verticalInputNeg;
 
