@@ -5,14 +5,15 @@ using UnityEngine.UI;
 
 public class SpeedometerDisplay : MonoBehaviour {
 
-    private int speed = 100;
+    private int speed;
     public Text speedText;
 
     // Update is called once per frame
-    void Update() {
+    public void updateSpeed(float s) {
 
-        speedText.text = "SPEED: " + speed;
-            speed--;
+        speedText.text = "SPEED: " + (int) s;
         
     }
+
+
 }
