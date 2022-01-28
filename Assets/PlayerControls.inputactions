@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Turn",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "70b7c13a-3a04-436a-b208-8381240b29b2",
                     "expectedControlType": "Axis",
                     "processors": "",
